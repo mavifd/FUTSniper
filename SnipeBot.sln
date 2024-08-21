@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnipeBot", "SnipeBot.csproj", "{BA4E3134-138E-44F0-B5AC-128C4F5ED342}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA4E3134-138E-44F0-B5AC-128C4F5ED342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4E3134-138E-44F0-B5AC-128C4F5ED342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4E3134-138E-44F0-B5AC-128C4F5ED342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4E3134-138E-44F0-B5AC-128C4F5ED342}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0032007-973B-424C-AD5C-8E3853D0B2DC}
+	EndGlobalSection
+EndGlobal
