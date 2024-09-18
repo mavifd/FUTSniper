@@ -29,11 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SnipeMain));
             this.StartBtn = new System.Windows.Forms.Button();
             this.StopBtn = new System.Windows.Forms.Button();
             this.LoggerTXT = new System.Windows.Forms.RichTextBox();
             this.priceSetupBox = new System.Windows.Forms.GroupBox();
+            this.changevalueTxt = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.maxchangeTxt = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@
             this.maxpriceTxt = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.topmostcb = new System.Windows.Forms.CheckBox();
             this.resetstatsBtn = new System.Windows.Forms.Button();
             this.errorcountTxt = new System.Windows.Forms.Label();
             this.loopcountTxt = new System.Windows.Forms.Label();
@@ -49,19 +51,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.StatUpdater = new System.Windows.Forms.Timer(this.components);
-            this.changevalueTxt = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.priceSetupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartBtn
             // 
+            this.StartBtn.ForeColor = System.Drawing.Color.DarkBlue;
             this.StartBtn.Location = new System.Drawing.Point(12, 12);
             this.StartBtn.Name = "StartBtn";
             this.StartBtn.Size = new System.Drawing.Size(118, 41);
             this.StartBtn.TabIndex = 0;
-            this.StartBtn.Text = "Start";
+            this.StartBtn.Text = "Başlat";
             this.StartBtn.UseVisualStyleBackColor = true;
             this.StartBtn.Click += new System.EventHandler(this.StartBtn_Click);
             // 
@@ -72,7 +73,7 @@
             this.StopBtn.Name = "StopBtn";
             this.StopBtn.Size = new System.Drawing.Size(118, 41);
             this.StopBtn.TabIndex = 1;
-            this.StopBtn.Text = "Stop";
+            this.StopBtn.Text = "Durdur";
             this.StopBtn.UseVisualStyleBackColor = true;
             this.StopBtn.Click += new System.EventHandler(this.StopBtn_Click);
             // 
@@ -83,9 +84,10 @@
             this.LoggerTXT.Location = new System.Drawing.Point(136, 12);
             this.LoggerTXT.Name = "LoggerTXT";
             this.LoggerTXT.ReadOnly = true;
-            this.LoggerTXT.Size = new System.Drawing.Size(462, 367);
+            this.LoggerTXT.Size = new System.Drawing.Size(739, 367);
             this.LoggerTXT.TabIndex = 2;
-            this.LoggerTXT.Text = resources.GetString("LoggerTXT.Text");
+            this.LoggerTXT.Text = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --remote-debugging" +
+    "-port=9111\n\nEdge tamamen kapalı olduğundan emin ol.\n";
             // 
             // priceSetupBox
             // 
@@ -97,12 +99,33 @@
             this.priceSetupBox.Controls.Add(this.changeTxt);
             this.priceSetupBox.Controls.Add(this.maxpriceTxt);
             this.priceSetupBox.Controls.Add(this.label11);
+            this.priceSetupBox.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.priceSetupBox.Location = new System.Drawing.Point(12, 106);
             this.priceSetupBox.Name = "priceSetupBox";
             this.priceSetupBox.Size = new System.Drawing.Size(118, 273);
             this.priceSetupBox.TabIndex = 34;
             this.priceSetupBox.TabStop = false;
-            this.priceSetupBox.Text = "Price Setup";
+            this.priceSetupBox.Text = "Fiyat Ayarları";
+            // 
+            // changevalueTxt
+            // 
+            this.changevalueTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.changevalueTxt.Location = new System.Drawing.Point(6, 233);
+            this.changevalueTxt.Name = "changevalueTxt";
+            this.changevalueTxt.Size = new System.Drawing.Size(99, 27);
+            this.changevalueTxt.TabIndex = 60;
+            this.changevalueTxt.Text = "50";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DarkGreen;
+            this.label4.Location = new System.Drawing.Point(6, 206);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 20);
+            this.label4.TabIndex = 59;
+            this.label4.Text = "Değişim ";
             // 
             // maxchangeTxt
             // 
@@ -117,21 +140,24 @@
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.DarkGreen;
             this.label13.Location = new System.Drawing.Point(6, 145);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(91, 20);
+            this.label13.Size = new System.Drawing.Size(108, 20);
             this.label13.TabIndex = 57;
-            this.label13.Text = "Max Change";
+            this.label13.Text = "En Yüksek Artış";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.ForeColor = System.Drawing.Color.DarkGreen;
             this.label12.Location = new System.Drawing.Point(6, 84);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(99, 20);
+            this.label12.Size = new System.Drawing.Size(81, 20);
             this.label12.TabIndex = 56;
-            this.label12.Text = "Change Value";
+            this.label12.Text = "Artış Oranı";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // changeTxt
             // 
@@ -155,14 +181,16 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.ForeColor = System.Drawing.Color.DarkGreen;
             this.label11.Location = new System.Drawing.Point(6, 23);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(73, 20);
+            this.label11.Size = new System.Drawing.Size(81, 20);
             this.label11.TabIndex = 50;
-            this.label11.Text = "Max Price";
+            this.label11.Text = "Tavan Fiyat";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.topmostcb);
             this.groupBox1.Controls.Add(this.resetstatsBtn);
             this.groupBox1.Controls.Add(this.errorcountTxt);
             this.groupBox1.Controls.Add(this.loopcountTxt);
@@ -170,12 +198,25 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(604, 12);
+            this.groupBox1.Location = new System.Drawing.Point(881, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(110, 367);
+            this.groupBox1.Size = new System.Drawing.Size(116, 367);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Status";
+            this.groupBox1.Text = "Durum";
+            // 
+            // topmostcb
+            // 
+            this.topmostcb.AutoSize = true;
+            this.topmostcb.Checked = true;
+            this.topmostcb.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.topmostcb.Location = new System.Drawing.Point(6, 269);
+            this.topmostcb.Name = "topmostcb";
+            this.topmostcb.Size = new System.Drawing.Size(105, 24);
+            this.topmostcb.TabIndex = 65;
+            this.topmostcb.Text = "Üstte Kalsın";
+            this.topmostcb.UseVisualStyleBackColor = true;
+            this.topmostcb.CheckedChanged += new System.EventHandler(this.topmostcb_CheckedChanged);
             // 
             // resetstatsBtn
             // 
@@ -183,7 +224,7 @@
             this.resetstatsBtn.Name = "resetstatsBtn";
             this.resetstatsBtn.Size = new System.Drawing.Size(98, 62);
             this.resetstatsBtn.TabIndex = 36;
-            this.resetstatsBtn.Text = "Reset\r\nStats";
+            this.resetstatsBtn.Text = "İstatistikleri Sıfırla";
             this.resetstatsBtn.UseVisualStyleBackColor = true;
             this.resetstatsBtn.Click += new System.EventHandler(this.resetstatsBtn_Click);
             // 
@@ -225,9 +266,9 @@
             this.label3.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(6, 111);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 20);
+            this.label3.Size = new System.Drawing.Size(44, 20);
             this.label3.TabIndex = 61;
-            this.label3.Text = "Errors:";
+            this.label3.Text = "Hata:";
             // 
             // label2
             // 
@@ -235,9 +276,9 @@
             this.label2.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(6, 67);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 20);
+            this.label2.Size = new System.Drawing.Size(57, 20);
             this.label2.TabIndex = 60;
-            this.label2.Text = "Loop:";
+            this.label2.Text = "Döngü:";
             // 
             // label1
             // 
@@ -245,9 +286,9 @@
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(6, 23);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 20);
+            this.label1.Size = new System.Drawing.Size(54, 20);
             this.label1.TabIndex = 59;
-            this.label1.Text = "Buyed:";
+            this.label1.Text = "Alınan:";
             // 
             // StatUpdater
             // 
@@ -255,37 +296,18 @@
             this.StatUpdater.Interval = 1000;
             this.StatUpdater.Tick += new System.EventHandler(this.StatUpdater_Tick);
             // 
-            // changevalueTxt
-            // 
-            this.changevalueTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changevalueTxt.Location = new System.Drawing.Point(6, 233);
-            this.changevalueTxt.Name = "changevalueTxt";
-            this.changevalueTxt.Size = new System.Drawing.Size(99, 27);
-            this.changevalueTxt.TabIndex = 60;
-            this.changevalueTxt.Text = "50";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 206);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(103, 20);
-            this.label4.TabIndex = 59;
-            this.label4.Text = "Variable Value";
-            // 
             // SnipeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(726, 385);
+            this.ClientSize = new System.Drawing.Size(1005, 385);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.priceSetupBox);
             this.Controls.Add(this.LoggerTXT);
             this.Controls.Add(this.StopBtn);
             this.Controls.Add(this.StartBtn);
-            this.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Ebrima", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "SnipeMain";
@@ -324,5 +346,6 @@
         private System.Windows.Forms.Button resetstatsBtn;
         private System.Windows.Forms.TextBox changevalueTxt;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox topmostcb;
     }
 }

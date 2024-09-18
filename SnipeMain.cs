@@ -125,109 +125,62 @@ namespace SnipeBot
             return Task.CompletedTask;
         }
 
-        private Task<bool> CheckResults()
+
+        private async Task BuyFunction()
         {
-            LogApp($"Check results...");
-            bool result = false;
-            try
+            DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
             {
-                DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
-                {
-                    Timeout = TimeSpan.FromSeconds(3),
-                    PollingInterval = TimeSpan.FromMilliseconds(500)
-                };
+                Timeout = TimeSpan.FromSeconds(3),
+                PollingInterval = TimeSpan.FromMilliseconds(500)
+            };
 
-                IWebElement chkres = wait.Until(drv =>
-                {
-                    return drv.FindElement(By.XPath("//*[contains(text(),'No results found')]"));
-                });
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
 
-                IWebElement chkbuy = wait.Until(drv =>
-                {
-                    var es = drv.FindElements(By.TagName("button")); ;
-                    return es.FirstOrDefault(el => el.Text == "Buy Now for");
-                });
+            IWebElement element = wait.Until(drv =>
+            {
+                var noResultsElements = drv.FindElements(By.TagName("section"));
+                var noResult = noResultsElements.FirstOrDefault(el => el.Text.Contains("No results"));
+                if (noResult != null) return noResult;
+                var buyButtonElements = drv.FindElements(By.TagName("button"));
+                var buyButton = buyButtonElements.FirstOrDefault(el => el.Text.Contains("Buy Now for"));
+                return buyButton;
+            });
 
-                if (chkres != null)
+            if (element != null)
+            {
+                if (element.Text.Contains("No results"))
                 {
-                    result = false;
-                    LogApp($"nothing.");
+                    LogApp("no results.");
+                    return;
                 }
-                else if (chkbuy != null)
+                else if (element.Text.Contains("Buy Now for"))
                 {
-                    result = true;
-                    LogApp($"buy it.");
+                    LogApp("buying player... [1]");
+                    element.Click();
                 }
             }
-            catch (Exception ex)
+            else
             {
-                LogApp($"Check Results: {ex.Message}", Color.Red);
-                ErrorCount++;
+                LogApp("nothing founded. [error-1]");
+                return;
             }
-            return Task.FromResult(result);
+
+            IWebElement confirmButton = wait.Until(drv =>
+            {
+                var eles = drv.FindElements(By.TagName("button"));
+                return eles.FirstOrDefault(el => el.Text == "Ok");
+            });
+
+            if (confirmButton != null)
+            {
+                LogApp($"Buying confirmed!", Color.Green);
+                confirmButton.Click();
+                BuyCount++;
+                LogApp($"Waiting for bid update. (25 sec.)");
+                await Task.Delay(25000);
+            }
         }
 
-
-        private async Task BuyAction() //satın al
-        {
-            LogApp($"Buying process.");
-
-            try
-            {
-                DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
-                {
-                    Timeout = TimeSpan.FromSeconds(1),
-                    PollingInterval = TimeSpan.FromMilliseconds(100)
-                };
-
-                IWebElement buyButton = wait.Until(drv =>
-                {
-                    var eles = drv.FindElements(By.TagName("button"));
-                    return eles.FirstOrDefault(el => el.Text == "Buy Now for");
-                });
-
-                if (buyButton != null)
-                {
-                    LogApp($"Buying started!", Color.Green);
-                    buyButton.Click();
-                }
-            }
-            catch (Exception ex)
-            {
-                LogApp($"Buy Action Step 1 failed: {ex}", Color.Red);
-                ErrorCount++;
-            }
-
-            try
-            {
-
-                DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
-                {
-                    Timeout = TimeSpan.FromSeconds(1),
-                    PollingInterval = TimeSpan.FromMilliseconds(100)
-                };
-
-                IWebElement confirmButton = wait.Until(drv =>
-                {
-                    var eles = drv.FindElements(By.TagName("button"));
-                    return eles.FirstOrDefault(el => el.Text == "Ok");
-                });
-
-                if (confirmButton != null)
-                {
-                    LogApp($"Buying confirmed!", Color.Green);
-                    confirmButton.Click();
-                    BuyCount++;
-                    LogApp($"waiting for bid update. (25 sec.)");
-                    await Task.Delay(25000);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogApp($"Buy Action Step 2 failed: {ex}", Color.Red);
-                ErrorCount++;
-            }
-        }
 
         private async Task MainFunction(CancellationToken token)
         {
@@ -252,7 +205,7 @@ namespace SnipeBot
             LogApp("Title: " + driver.Title);
 
             //IReadOnlyCollection<IWebElement> containers = driver.FindElements(By.CssSelector("*"));
-            //foreach (IWebElement element in containers) { LogApp($"Tag: {element.TagName} | Text: {element.Text} | Class: {element.GetAttribute("class")}"); }
+            //foreach (IWebElement element in containers) { LogApp($"Tag: {element.TagName} | Text: {element.Text} | Class: {element.GetAttribute("class")}"); }     
 
             int currentprice = int.Parse(maxpriceTxt.Text); ;
             int increment = int.Parse(changeTxt.Text);
@@ -267,28 +220,16 @@ namespace SnipeBot
 
                 if (loopcount != 0) // ilk döngü - fiyat değişimi yok - ilk fiyat 300
                 {
-                    if (currentprice <= maxvalue) // ilk döngü değil - max fiyattan küçükse arttır
-                    {
-                        currentprice += increment;
-                    }
-                    else if (currentprice == maxvalue)// ilk döngü değil ve max fiyata eşit - 50 ekle.
-                    {
-                        currentprice += changeval;
-                    }
-                    else if (currentprice >= maxvalue)// ilk döngü değil ve max fiyattan büyük - eski fiyata döndür
-                    {
-                        currentprice -= changeval;
-                    }
+                    if (currentprice <= maxvalue) currentprice += increment;
+                    else if (currentprice == maxvalue) currentprice += changeval;
+                    else if (currentprice >= maxvalue) currentprice -= changeval;
                 }
 
                 await PriceSetup(loopcount, currentprice, maxvalue, increment);
 
                 await SearchAction();
 
-                if (await CheckResults() == true)
-                {
-                    await BuyAction();
-                }
+                await BuyFunction();
 
                 await BackPageAction();
 
@@ -322,6 +263,12 @@ namespace SnipeBot
             StartBtn.Enabled = false;
             StopBtn.Enabled = true;
 
+            maxpriceTxt.Enabled = false;
+            changeTxt.Enabled = false;
+            maxchangeTxt.Enabled = false;
+            changevalueTxt.Enabled = false;
+
+
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
 
@@ -332,6 +279,12 @@ namespace SnipeBot
         {
             StartBtn.Enabled = true;
             StopBtn.Enabled = false;
+
+            maxpriceTxt.Enabled = true;
+            changeTxt.Enabled = true;
+            maxchangeTxt.Enabled = true;
+            changevalueTxt.Enabled = true;
+
             LogApp($"Thread cancelling.", Color.DarkSalmon);
             _cts?.Cancel();
         }
@@ -396,6 +349,11 @@ namespace SnipeBot
             BuyCount = 0;
             LoopCount = 0;
             ErrorCount = 0;
+        }
+
+        private void topmostcb_CheckedChanged(object sender, EventArgs e)
+        {
+            this.TopMost = topmostcb.Checked;
         }
     }
 }
