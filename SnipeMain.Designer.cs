@@ -87,7 +87,7 @@
             this.LoggerTXT.Size = new System.Drawing.Size(739, 367);
             this.LoggerTXT.TabIndex = 2;
             this.LoggerTXT.Text = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --remote-debugging" +
-    "-port=9111\n\nEdge tamamen kapalı olduğundan emin ol.\n";
+    "-port=9111\n\nEdge görev yöneticisinde çalışmıyor olmak zorunda. (msedge.exe)\n\n";
             // 
             // priceSetupBox
             // 
@@ -238,6 +238,7 @@
             this.errorcountTxt.Size = new System.Drawing.Size(17, 20);
             this.errorcountTxt.TabIndex = 64;
             this.errorcountTxt.Text = "0";
+            this.errorcountTxt.TextChanged += new System.EventHandler(this.errorcountTxt_TextChanged);
             // 
             // loopcountTxt
             // 
@@ -259,6 +260,7 @@
             this.buycountTxt.Size = new System.Drawing.Size(17, 20);
             this.buycountTxt.TabIndex = 62;
             this.buycountTxt.Text = "0";
+            this.buycountTxt.TextChanged += new System.EventHandler(this.buycountTxt_TextChanged);
             // 
             // label3
             // 
