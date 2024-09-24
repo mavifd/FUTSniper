@@ -1,4 +1,5 @@
 ﻿using Discord.Webhook;
+using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Support.UI;
@@ -28,10 +29,23 @@ namespace SnipeBot
             InitializeComponent();
         }
 
-        private Task PriceSetup(int loopcount, int currentprice, int maxvalue, int increment) // fiyatı ayarla
+        private async Task PriceSetup(int loopcount, int currentprice, int maxvalue, int increment, CancellationToken token) // fiyatı ayarla
         {
             try
             {
+
+                if (token.IsCancellationRequested)
+                {
+                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
+                    return;
+                }
+
+                if (driver == null)
+                {
+                    LogApp($"Driver kapalı, baştan başlatın.");
+                    return;
+                }
+
                 LogApp($"Fiyat ayarlanıyor...");
                 DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
                 {
@@ -66,15 +80,30 @@ namespace SnipeBot
             catch (Exception ex)
             {
                 LogApp($"Fiyat ayarlama başarısız. (hata-03)\nDetay:{ex}", Color.Red); //hata 3
+                await DiscordMessage($"Fiyat ayarlama başarısız. (hata-03)\nDetay:{ex}");
                 ErrorCount++;
             }
-            return Task.CompletedTask;
+            return;
         }
 
-        private Task BackPageAction() //arama sayfasına dön
+        private async Task BackPageAction(CancellationToken token) //arama sayfasına dön
         {
             try
             {
+
+                if (token.IsCancellationRequested)
+                {
+                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
+                    return;
+                }
+
+
+                if (driver == null)
+                {
+                    LogApp($"Driver kapalı, baştan başlatın.");
+                    return;
+                }
+
                 LogApp($"Arama sayfasına dönülüyor...");
                 DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
                 {
@@ -101,15 +130,30 @@ namespace SnipeBot
             catch (Exception ex)
             {
                 LogApp($"Arama sayfasına dönme başarısız. (hata-05)\nDetay:{ex}", Color.Red); //hata 5
+                await DiscordMessage($"Arama sayfasına dönme başarısız. (hata-05)\nDetay:{ex}");
                 ErrorCount++;
             }
-            return Task.CompletedTask;
+            return;
         }
 
-        private Task SearchAction() //arama yap
+        private async Task SearchAction(CancellationToken token) //arama yap
         {
             try
             {
+
+                if (token.IsCancellationRequested)
+                {
+                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
+                    return;
+                }
+
+
+                if (driver == null)
+                {
+                    LogApp($"Driver kapalı, baştan başlatın.");
+                    return;
+                }
+
                 LogApp($"Arama yapılıyor...");
 
                 DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
@@ -137,61 +181,69 @@ namespace SnipeBot
             catch (Exception ex)
             {
                 LogApp($"Arama başarısız. (hata-07)\nDetay:{ex}", Color.Red); //hata 7
+                await DiscordMessage($"Arama başarısız. (hata-07)\nDetay:{ex}");
                 ErrorCount++;
             }
-            return Task.CompletedTask;
+            return;
         }
 
-        private async Task BuyFunction() //sonuçları kontrol et ve satın al
+        private async Task BuyFunction(CancellationToken token, int curprice) //sonuçları kontrol et ve satın al
         {
+
+            if (token.IsCancellationRequested)
+            {
+                LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
+                return;
+            }
+
+
+            if (driver == null)
+            {
+                LogApp($"Driver kapalı, baştan başlatın.");
+                return;
+            }
+
             DefaultWait<IWebDriver> wait = new DefaultWait<IWebDriver>(driver)
             {
-                Timeout = TimeSpan.FromSeconds(5),
+                Timeout = TimeSpan.FromSeconds(2),
                 PollingInterval = TimeSpan.FromMilliseconds(50)
             };
+
             wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
 
             LogApp($"Arama sonuçları kontrol ediliyor...");
+
+            bool contvar = false;
 
             try
             {
                 IWebElement element = wait.Until(drv =>
                 {
-                    var noResult = drv.FindElements(By.TagName("section")).FirstOrDefault(el => el.Text.Contains("No results"));
-                    if (noResult != null) return noResult;
-                    return drv.FindElements(By.TagName("button")).FirstOrDefault(el => el.Text.Contains("Buy Now for"));
-                });
+                    var buybtn = drv.FindElements(By.TagName("button")).FirstOrDefault(el => el.Text.Contains("Buy Now for"));
+                    if (buybtn != null) { LogApp("Oyuncu alınıyor... Aşama 1", Color.Green); buybtn.Click(); return buybtn; }
 
-                if (element != null)
-                {
-                    if (element.Text.Contains("No results"))
-                    {
-                        LogApp("Sonuç yok.");
-                        return;
-                    }
-                    else if (element.Text.Contains("Buy Now for"))
-                    {
-                        LogApp("Oyuncu alınıyor... Aşama 1", Color.Green);
-                        element.Click();
-                    }
-                    else
-                    {
-                        LogApp("Herhangi bir öge bulunamadı. Geçersiz sonuç. (error-08)", Color.Red); //hata 8
-                    }
-                }
-                else
-                {
-                    LogApp("Herhangi bir öge bulunamadı. (error-09)", Color.Red); //hata 9
-                    return;
-                }
+                    var noResult = drv.FindElements(By.TagName("section")).FirstOrDefault(el => el.Text.Contains("No results"));
+                    if (noResult != null) { LogApp("Sonuç yok."); contvar = true; return noResult; }
+
+                    return null;
+                });
             }
             catch (Exception ex)
             {
                 LogApp($"Arama sonuç kontrolü başarısız. (hata-010)\nDetay:{ex}", Color.Red); //hata 10
+                await DiscordMessage($"Arama sonuç kontrolü başarısız. (hata-010)\nDetay:{ex}");
                 ErrorCount++;
             }
 
+            if (contvar) return;
+
             LogApp($"Satın alma onaylanıyor...");
+
+            if (token.IsCancellationRequested)
+            {
+                LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
+                return;
+            }
 
             try
             {
@@ -204,11 +256,11 @@ namespace SnipeBot
                 if (confirmButton != null)
                 {
                     LogApp($"Satın alma onaylandı!", Color.Green);
-                    await DiscordMessage("Yeni bir satın alma tamamlandı.");
                     confirmButton.Click();
+                    await DiscordMessage($"Yeni bir satın alma tamamlandı. Fiyat: {curprice}");
                     BuyCount++;
                     LogApp($"EAFC Sunucu güncellemesi için 25 saniye bekleniyor...");
-                    await Task.Delay(25000);
+                    await Task.Delay((int)(buycdval.Value * 1000));
                 }
                 else
                 {
@@ -219,6 +271,7 @@ namespace SnipeBot
             catch (Exception ex)
             {
                 LogApp($"Satın alma onay kontrolü başarısız. (hata-012)\nDetay:{ex}", Color.Red); //hata 12
+                await DiscordMessage($"Satın alma onay kontrolü başarısız. (hata-012)\nDetay:{ex}"); //hata 12
                 ErrorCount++;
             }
         }
@@ -253,11 +306,26 @@ namespace SnipeBot
             int maxvalue = int.Parse(maxchangeTxt.Text);
             int changeval = int.Parse(changevalueTxt.Text);
             int loopcount = 0;
+            int cdloopcount = 0;
 
             while (true)
             {
+
+                if (driver == null)
+                {
+                    LogApp($"Driver kapalı, baştan başlatın.");
+                    break;
+                }
+
                 LogApp($"Mevcut Fiyat: {currentprice}.");
                 LogApp($"Döngü Sayısı: {loopcount}.");
+
+                if (cdloopcount == targetloopval.Value)
+                {
+                    LogApp($"Döngü molası başladı. {loopcdval.Value} saniye.");
+                    await Task.Delay((int)(loopcdval.Value * 1000));
+                    cdloopcount = 0;
+                }
 
                 if (loopcount != 0) // ilk döngü - fiyat değişimi yok - ilk fiyat 300
                 {
@@ -266,21 +334,21 @@ namespace SnipeBot
                     else if (currentprice >= maxvalue) currentprice -= changeval;
                 }
 
-                await PriceSetup(loopcount, currentprice, maxvalue, increment);
+                await PriceSetup(loopcount, currentprice, maxvalue, increment, token);
 
-                await SearchAction();
+                await SearchAction(token);
 
-                await BuyFunction();
+                await BuyFunction(token, currentprice);
 
-                await BackPageAction();
+                await BackPageAction(token);
 
                 loopcount++;
-
+                cdloopcount++;
                 LoopCount = loopcount;
 
-                LogApp($"Hız Limiti Koruması - 2 Saniye Bekleme");
+                LogApp($"Hız Limiti Koruması - {ratelimitval.Value / 1000} Saniye Bekleme");
 
-                await Task.Delay(2000);
+                await Task.Delay((int)(ratelimitval.Value));
 
                 if (token.IsCancellationRequested)
                 {
@@ -398,8 +466,9 @@ namespace SnipeBot
 
         public static async Task DiscordMessage(string message, bool ping = false)
         {
-            string logEntry = $"{DateTime.Now:dd/MM HH:mm} | {message}";
-            if (ping) logEntry = $"{DateTime.Now:dd/MM HH:mm} | <@everyone> | {message}";
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            string logEntry = $"{DateTime.Now:dd/MM HH:mm} - {userName} | {message}";
+            if (ping) logEntry = $"{DateTime.Now:dd/MM HH:mm} - {userName} | @everyone | {message}";
             await DiscordLog.SendMessageAsync(logEntry);
         }
 

@@ -51,8 +51,22 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.StatUpdater = new System.Windows.Forms.Timer(this.components);
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.ratelimitval = new System.Windows.Forms.NumericUpDown();
+            this.buycdval = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.targetloopval = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.loopcdval = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.priceSetupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).BeginInit();
             this.SuspendLayout();
             // 
             // StartBtn
@@ -298,12 +312,143 @@
             this.StatUpdater.Interval = 1000;
             this.StatUpdater.Tick += new System.EventHandler(this.StatUpdater_Tick);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.loopcdval);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.targetloopval);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.buycdval);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.ratelimitval);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
+            this.groupBox2.Location = new System.Drawing.Point(1003, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(165, 367);
+            this.groupBox2.TabIndex = 61;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Zamanlama";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label8.Location = new System.Drawing.Point(10, 23);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(101, 20);
+            this.label8.TabIndex = 50;
+            this.label8.Text = "Hız Limit (ms)";
+            // 
+            // ratelimitval
+            // 
+            this.ratelimitval.Location = new System.Drawing.Point(10, 50);
+            this.ratelimitval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.ratelimitval.Name = "ratelimitval";
+            this.ratelimitval.Size = new System.Drawing.Size(149, 28);
+            this.ratelimitval.TabIndex = 61;
+            this.ratelimitval.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // buycdval
+            // 
+            this.buycdval.Location = new System.Drawing.Point(10, 112);
+            this.buycdval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.buycdval.Name = "buycdval";
+            this.buycdval.Size = new System.Drawing.Size(149, 28);
+            this.buycdval.TabIndex = 63;
+            this.buycdval.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label5.Location = new System.Drawing.Point(10, 85);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(129, 20);
+            this.label5.TabIndex = 62;
+            this.label5.Text = "Alım Bekleme (sn)";
+            // 
+            // targetloopval
+            // 
+            this.targetloopval.Location = new System.Drawing.Point(10, 174);
+            this.targetloopval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.targetloopval.Name = "targetloopval";
+            this.targetloopval.Size = new System.Drawing.Size(149, 28);
+            this.targetloopval.TabIndex = 65;
+            this.targetloopval.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label6.Location = new System.Drawing.Point(10, 147);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(142, 20);
+            this.label6.TabIndex = 64;
+            this.label6.Text = "Bekleme için Döngü";
+            // 
+            // loopcdval
+            // 
+            this.loopcdval.Location = new System.Drawing.Point(10, 236);
+            this.loopcdval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.loopcdval.Name = "loopcdval";
+            this.loopcdval.Size = new System.Drawing.Size(149, 28);
+            this.loopcdval.TabIndex = 67;
+            this.loopcdval.Value = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label7.Location = new System.Drawing.Point(10, 209);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(137, 20);
+            this.label7.TabIndex = 66;
+            this.label7.Text = "Bekleme Süresi (sn)";
+            // 
             // SnipeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1005, 385);
+            this.ClientSize = new System.Drawing.Size(1180, 385);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.priceSetupBox);
             this.Controls.Add(this.LoggerTXT);
@@ -321,6 +466,12 @@
             this.priceSetupBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -349,5 +500,14 @@
         private System.Windows.Forms.TextBox changevalueTxt;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox topmostcb;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.NumericUpDown loopcdval;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown targetloopval;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown buycdval;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown ratelimitval;
+        private System.Windows.Forms.Label label8;
     }
 }
