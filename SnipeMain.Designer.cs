@@ -33,8 +33,6 @@
             this.StopBtn = new System.Windows.Forms.Button();
             this.LoggerTXT = new System.Windows.Forms.RichTextBox();
             this.priceSetupBox = new System.Windows.Forms.GroupBox();
-            this.changevalueTxt = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.maxchangeTxt = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -52,21 +50,25 @@
             this.label1 = new System.Windows.Forms.Label();
             this.StatUpdater = new System.Windows.Forms.Timer(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.ratelimitval = new System.Windows.Forms.NumericUpDown();
-            this.buycdval = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.targetloopval = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
             this.loopcdval = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
+            this.targetloopval = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.buycdval = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ratelimitval = new System.Windows.Forms.NumericUpDown();
+            this.label8 = new System.Windows.Forms.Label();
+            this.prepareEdge = new System.Windows.Forms.Button();
+            this.processtimer = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.priceSetupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).BeginInit();
             this.SuspendLayout();
             // 
             // StartBtn
@@ -98,15 +100,12 @@
             this.LoggerTXT.Location = new System.Drawing.Point(136, 12);
             this.LoggerTXT.Name = "LoggerTXT";
             this.LoggerTXT.ReadOnly = true;
-            this.LoggerTXT.Size = new System.Drawing.Size(739, 367);
+            this.LoggerTXT.Size = new System.Drawing.Size(739, 313);
             this.LoggerTXT.TabIndex = 2;
-            this.LoggerTXT.Text = "\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --remote-debugging" +
-    "-port=9111\n\nEdge görev yöneticisinde çalışmıyor olmak zorunda. (msedge.exe)\n\n";
+            this.LoggerTXT.Text = "";
             // 
             // priceSetupBox
             // 
-            this.priceSetupBox.Controls.Add(this.changevalueTxt);
-            this.priceSetupBox.Controls.Add(this.label4);
             this.priceSetupBox.Controls.Add(this.maxchangeTxt);
             this.priceSetupBox.Controls.Add(this.label13);
             this.priceSetupBox.Controls.Add(this.label12);
@@ -116,30 +115,10 @@
             this.priceSetupBox.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.priceSetupBox.Location = new System.Drawing.Point(12, 106);
             this.priceSetupBox.Name = "priceSetupBox";
-            this.priceSetupBox.Size = new System.Drawing.Size(118, 273);
+            this.priceSetupBox.Size = new System.Drawing.Size(118, 219);
             this.priceSetupBox.TabIndex = 34;
             this.priceSetupBox.TabStop = false;
             this.priceSetupBox.Text = "Fiyat Ayarları";
-            // 
-            // changevalueTxt
-            // 
-            this.changevalueTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changevalueTxt.Location = new System.Drawing.Point(6, 233);
-            this.changevalueTxt.Name = "changevalueTxt";
-            this.changevalueTxt.Size = new System.Drawing.Size(99, 27);
-            this.changevalueTxt.TabIndex = 60;
-            this.changevalueTxt.Text = "50";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DarkGreen;
-            this.label4.Location = new System.Drawing.Point(6, 206);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 20);
-            this.label4.TabIndex = 59;
-            this.label4.Text = "Değişim ";
             // 
             // maxchangeTxt
             // 
@@ -157,9 +136,9 @@
             this.label13.ForeColor = System.Drawing.Color.DarkGreen;
             this.label13.Location = new System.Drawing.Point(6, 145);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(108, 20);
+            this.label13.Size = new System.Drawing.Size(81, 20);
             this.label13.TabIndex = 57;
-            this.label13.Text = "En Yüksek Artış";
+            this.label13.Text = "Tavan Fiyat";
             // 
             // label12
             // 
@@ -198,9 +177,9 @@
             this.label11.ForeColor = System.Drawing.Color.DarkGreen;
             this.label11.Location = new System.Drawing.Point(6, 23);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(81, 20);
+            this.label11.Size = new System.Drawing.Size(109, 20);
             this.label11.TabIndex = 50;
-            this.label11.Text = "Tavan Fiyat";
+            this.label11.Text = "Başlangıç Fiyat";
             // 
             // groupBox1
             // 
@@ -214,7 +193,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(881, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(116, 367);
+            this.groupBox1.Size = new System.Drawing.Size(116, 313);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Durum";
@@ -224,7 +203,7 @@
             this.topmostcb.AutoSize = true;
             this.topmostcb.Checked = true;
             this.topmostcb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.topmostcb.Location = new System.Drawing.Point(6, 269);
+            this.topmostcb.Location = new System.Drawing.Point(3, 158);
             this.topmostcb.Name = "topmostcb";
             this.topmostcb.Size = new System.Drawing.Size(105, 24);
             this.topmostcb.TabIndex = 65;
@@ -234,7 +213,7 @@
             // 
             // resetstatsBtn
             // 
-            this.resetstatsBtn.Location = new System.Drawing.Point(6, 299);
+            this.resetstatsBtn.Location = new System.Drawing.Point(10, 239);
             this.resetstatsBtn.Name = "resetstatsBtn";
             this.resetstatsBtn.Size = new System.Drawing.Size(98, 62);
             this.resetstatsBtn.TabIndex = 36;
@@ -314,6 +293,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.processtimer);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.prepareEdge);
             this.groupBox2.Controls.Add(this.loopcdval);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.targetloopval);
@@ -325,98 +307,14 @@
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox2.Location = new System.Drawing.Point(1003, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(165, 367);
+            this.groupBox2.Size = new System.Drawing.Size(165, 313);
             this.groupBox2.TabIndex = 61;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zamanlama";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label8.Location = new System.Drawing.Point(10, 23);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(101, 20);
-            this.label8.TabIndex = 50;
-            this.label8.Text = "Hız Limit (ms)";
-            // 
-            // ratelimitval
-            // 
-            this.ratelimitval.Location = new System.Drawing.Point(10, 50);
-            this.ratelimitval.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.ratelimitval.Name = "ratelimitval";
-            this.ratelimitval.Size = new System.Drawing.Size(149, 28);
-            this.ratelimitval.TabIndex = 61;
-            this.ratelimitval.Value = new decimal(new int[] {
-            2000,
-            0,
-            0,
-            0});
-            // 
-            // buycdval
-            // 
-            this.buycdval.Location = new System.Drawing.Point(10, 112);
-            this.buycdval.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.buycdval.Name = "buycdval";
-            this.buycdval.Size = new System.Drawing.Size(149, 28);
-            this.buycdval.TabIndex = 63;
-            this.buycdval.Value = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label5.Location = new System.Drawing.Point(10, 85);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(129, 20);
-            this.label5.TabIndex = 62;
-            this.label5.Text = "Alım Bekleme (sn)";
-            // 
-            // targetloopval
-            // 
-            this.targetloopval.Location = new System.Drawing.Point(10, 174);
-            this.targetloopval.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.targetloopval.Name = "targetloopval";
-            this.targetloopval.Size = new System.Drawing.Size(149, 28);
-            this.targetloopval.TabIndex = 65;
-            this.targetloopval.Value = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label6.Location = new System.Drawing.Point(10, 147);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(142, 20);
-            this.label6.TabIndex = 64;
-            this.label6.Text = "Bekleme için Döngü";
-            // 
             // loopcdval
             // 
-            this.loopcdval.Location = new System.Drawing.Point(10, 236);
+            this.loopcdval.Location = new System.Drawing.Point(6, 181);
             this.loopcdval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -436,18 +334,141 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label7.Location = new System.Drawing.Point(10, 209);
+            this.label7.Location = new System.Drawing.Point(6, 162);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(137, 20);
             this.label7.TabIndex = 66;
             this.label7.Text = "Bekleme Süresi (sn)";
+            // 
+            // targetloopval
+            // 
+            this.targetloopval.Location = new System.Drawing.Point(6, 135);
+            this.targetloopval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.targetloopval.Name = "targetloopval";
+            this.targetloopval.Size = new System.Drawing.Size(149, 28);
+            this.targetloopval.TabIndex = 65;
+            this.targetloopval.Value = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label6.Location = new System.Drawing.Point(6, 116);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(142, 20);
+            this.label6.TabIndex = 64;
+            this.label6.Text = "Bekleme için Döngü";
+            // 
+            // buycdval
+            // 
+            this.buycdval.Location = new System.Drawing.Point(6, 89);
+            this.buycdval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.buycdval.Name = "buycdval";
+            this.buycdval.Size = new System.Drawing.Size(149, 28);
+            this.buycdval.TabIndex = 63;
+            this.buycdval.Value = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label5.Location = new System.Drawing.Point(6, 70);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(129, 20);
+            this.label5.TabIndex = 62;
+            this.label5.Text = "Alım Bekleme (sn)";
+            // 
+            // ratelimitval
+            // 
+            this.ratelimitval.Location = new System.Drawing.Point(6, 43);
+            this.ratelimitval.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.ratelimitval.Name = "ratelimitval";
+            this.ratelimitval.Size = new System.Drawing.Size(149, 28);
+            this.ratelimitval.TabIndex = 61;
+            this.ratelimitval.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label8.Location = new System.Drawing.Point(6, 24);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(101, 20);
+            this.label8.TabIndex = 50;
+            this.label8.Text = "Hız Limit (ms)";
+            // 
+            // prepareEdge
+            // 
+            this.prepareEdge.ForeColor = System.Drawing.Color.DarkBlue;
+            this.prepareEdge.Location = new System.Drawing.Point(6, 266);
+            this.prepareEdge.Name = "prepareEdge";
+            this.prepareEdge.Size = new System.Drawing.Size(153, 35);
+            this.prepareEdge.TabIndex = 62;
+            this.prepareEdge.Text = "Edge Başlat";
+            this.prepareEdge.UseVisualStyleBackColor = true;
+            this.prepareEdge.Click += new System.EventHandler(this.prepareEdge_Click);
+            // 
+            // processtimer
+            // 
+            this.processtimer.Location = new System.Drawing.Point(6, 231);
+            this.processtimer.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.processtimer.Name = "processtimer";
+            this.processtimer.Size = new System.Drawing.Size(149, 28);
+            this.processtimer.TabIndex = 69;
+            this.processtimer.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label4.Location = new System.Drawing.Point(6, 212);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(98, 20);
+            this.label4.TabIndex = 68;
+            this.label4.Text = "İşlem Kontrol";
             // 
             // SnipeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1180, 385);
+            this.ClientSize = new System.Drawing.Size(1180, 334);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.priceSetupBox);
@@ -468,10 +489,11 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buycdval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -497,8 +519,6 @@
         private System.Windows.Forms.Label buycountTxt;
         private System.Windows.Forms.Timer StatUpdater;
         private System.Windows.Forms.Button resetstatsBtn;
-        private System.Windows.Forms.TextBox changevalueTxt;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox topmostcb;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.NumericUpDown loopcdval;
@@ -509,5 +529,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown ratelimitval;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button prepareEdge;
+        private System.Windows.Forms.NumericUpDown processtimer;
+        private System.Windows.Forms.Label label4;
     }
 }
