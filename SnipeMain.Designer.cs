@@ -40,6 +40,7 @@
             this.maxpriceTxt = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.multisearchCh = new System.Windows.Forms.CheckBox();
             this.topmostcb = new System.Windows.Forms.CheckBox();
             this.resetstatsBtn = new System.Windows.Forms.Button();
             this.errorcountTxt = new System.Windows.Forms.Label();
@@ -50,6 +51,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.StatUpdater = new System.Windows.Forms.Timer(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.processtimer = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.prepareEdge = new System.Windows.Forms.Button();
             this.loopcdval = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
             this.targetloopval = new System.Windows.Forms.NumericUpDown();
@@ -58,17 +62,19 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ratelimitval = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
-            this.prepareEdge = new System.Windows.Forms.Button();
-            this.processtimer = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.clearPlayers = new System.Windows.Forms.Button();
+            this.addPlayers = new System.Windows.Forms.Button();
+            this.playerLst = new System.Windows.Forms.ListBox();
             this.priceSetupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.buycdval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartBtn
@@ -100,7 +106,7 @@
             this.LoggerTXT.Location = new System.Drawing.Point(136, 12);
             this.LoggerTXT.Name = "LoggerTXT";
             this.LoggerTXT.ReadOnly = true;
-            this.LoggerTXT.Size = new System.Drawing.Size(739, 313);
+            this.LoggerTXT.Size = new System.Drawing.Size(469, 313);
             this.LoggerTXT.TabIndex = 2;
             this.LoggerTXT.Text = "";
             // 
@@ -183,6 +189,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.multisearchCh);
             this.groupBox1.Controls.Add(this.topmostcb);
             this.groupBox1.Controls.Add(this.resetstatsBtn);
             this.groupBox1.Controls.Add(this.errorcountTxt);
@@ -191,29 +198,41 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(881, 12);
+            this.groupBox1.Location = new System.Drawing.Point(611, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(116, 313);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Durum";
             // 
+            // multisearchCh
+            // 
+            this.multisearchCh.AutoSize = true;
+            this.multisearchCh.Enabled = false;
+            this.multisearchCh.Location = new System.Drawing.Point(10, 189);
+            this.multisearchCh.Name = "multisearchCh";
+            this.multisearchCh.Size = new System.Drawing.Size(77, 44);
+            this.multisearchCh.TabIndex = 66;
+            this.multisearchCh.Text = "Çoklu \r\nOyuncu";
+            this.multisearchCh.UseVisualStyleBackColor = true;
+            this.multisearchCh.CheckedChanged += new System.EventHandler(this.multisearchCh_CheckedChanged);
+            // 
             // topmostcb
             // 
             this.topmostcb.AutoSize = true;
             this.topmostcb.Checked = true;
             this.topmostcb.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.topmostcb.Location = new System.Drawing.Point(3, 158);
+            this.topmostcb.Location = new System.Drawing.Point(10, 139);
             this.topmostcb.Name = "topmostcb";
-            this.topmostcb.Size = new System.Drawing.Size(105, 24);
+            this.topmostcb.Size = new System.Drawing.Size(82, 44);
             this.topmostcb.TabIndex = 65;
-            this.topmostcb.Text = "Üstte Kalsın";
+            this.topmostcb.Text = "En Üstte\r\nTut";
             this.topmostcb.UseVisualStyleBackColor = true;
             this.topmostcb.CheckedChanged += new System.EventHandler(this.topmostcb_CheckedChanged);
             // 
             // resetstatsBtn
             // 
-            this.resetstatsBtn.Location = new System.Drawing.Point(10, 239);
+            this.resetstatsBtn.Location = new System.Drawing.Point(10, 245);
             this.resetstatsBtn.Name = "resetstatsBtn";
             this.resetstatsBtn.Size = new System.Drawing.Size(98, 62);
             this.resetstatsBtn.TabIndex = 36;
@@ -226,18 +245,17 @@
             this.errorcountTxt.AutoSize = true;
             this.errorcountTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.errorcountTxt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.errorcountTxt.Location = new System.Drawing.Point(6, 133);
+            this.errorcountTxt.Location = new System.Drawing.Point(60, 82);
             this.errorcountTxt.Name = "errorcountTxt";
             this.errorcountTxt.Size = new System.Drawing.Size(17, 20);
             this.errorcountTxt.TabIndex = 64;
             this.errorcountTxt.Text = "0";
-            this.errorcountTxt.TextChanged += new System.EventHandler(this.errorcountTxt_TextChanged);
             // 
             // loopcountTxt
             // 
             this.loopcountTxt.AutoSize = true;
             this.loopcountTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loopcountTxt.Location = new System.Drawing.Point(6, 89);
+            this.loopcountTxt.Location = new System.Drawing.Point(60, 53);
             this.loopcountTxt.Name = "loopcountTxt";
             this.loopcountTxt.Size = new System.Drawing.Size(17, 20);
             this.loopcountTxt.TabIndex = 63;
@@ -248,18 +266,17 @@
             this.buycountTxt.AutoSize = true;
             this.buycountTxt.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buycountTxt.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.buycountTxt.Location = new System.Drawing.Point(6, 45);
+            this.buycountTxt.Location = new System.Drawing.Point(60, 24);
             this.buycountTxt.Name = "buycountTxt";
             this.buycountTxt.Size = new System.Drawing.Size(17, 20);
             this.buycountTxt.TabIndex = 62;
             this.buycountTxt.Text = "0";
-            this.buycountTxt.TextChanged += new System.EventHandler(this.buycountTxt_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(6, 111);
+            this.label3.Location = new System.Drawing.Point(17, 82);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 20);
             this.label3.TabIndex = 61;
@@ -269,7 +286,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 67);
+            this.label2.Location = new System.Drawing.Point(4, 53);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 20);
             this.label2.TabIndex = 60;
@@ -279,7 +296,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Location = new System.Drawing.Point(7, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 20);
             this.label1.TabIndex = 59;
@@ -305,16 +322,55 @@
             this.groupBox2.Controls.Add(this.ratelimitval);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
-            this.groupBox2.Location = new System.Drawing.Point(1003, 12);
+            this.groupBox2.Location = new System.Drawing.Point(733, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(165, 313);
             this.groupBox2.TabIndex = 61;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zamanlama";
             // 
+            // processtimer
+            // 
+            this.processtimer.Location = new System.Drawing.Point(6, 236);
+            this.processtimer.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.processtimer.Name = "processtimer";
+            this.processtimer.Size = new System.Drawing.Size(149, 28);
+            this.processtimer.TabIndex = 69;
+            this.processtimer.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.DarkOrchid;
+            this.label4.Location = new System.Drawing.Point(6, 216);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(98, 20);
+            this.label4.TabIndex = 68;
+            this.label4.Text = "İşlem Kontrol";
+            // 
+            // prepareEdge
+            // 
+            this.prepareEdge.ForeColor = System.Drawing.Color.DarkBlue;
+            this.prepareEdge.Location = new System.Drawing.Point(6, 272);
+            this.prepareEdge.Name = "prepareEdge";
+            this.prepareEdge.Size = new System.Drawing.Size(153, 35);
+            this.prepareEdge.TabIndex = 62;
+            this.prepareEdge.Text = "Edge Başlat";
+            this.prepareEdge.UseVisualStyleBackColor = true;
+            this.prepareEdge.Click += new System.EventHandler(this.prepareEdge_Click);
+            // 
             // loopcdval
             // 
-            this.loopcdval.Location = new System.Drawing.Point(6, 181);
+            this.loopcdval.Location = new System.Drawing.Point(6, 188);
             this.loopcdval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -334,7 +390,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label7.Location = new System.Drawing.Point(6, 162);
+            this.label7.Location = new System.Drawing.Point(6, 168);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(137, 20);
             this.label7.TabIndex = 66;
@@ -342,7 +398,7 @@
             // 
             // targetloopval
             // 
-            this.targetloopval.Location = new System.Drawing.Point(6, 135);
+            this.targetloopval.Location = new System.Drawing.Point(6, 140);
             this.targetloopval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -362,7 +418,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label6.Location = new System.Drawing.Point(6, 116);
+            this.label6.Location = new System.Drawing.Point(6, 120);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(142, 20);
             this.label6.TabIndex = 64;
@@ -370,7 +426,7 @@
             // 
             // buycdval
             // 
-            this.buycdval.Location = new System.Drawing.Point(6, 89);
+            this.buycdval.Location = new System.Drawing.Point(6, 92);
             this.buycdval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -390,7 +446,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label5.Location = new System.Drawing.Point(6, 70);
+            this.label5.Location = new System.Drawing.Point(6, 72);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(129, 20);
             this.label5.TabIndex = 62;
@@ -398,7 +454,7 @@
             // 
             // ratelimitval
             // 
-            this.ratelimitval.Location = new System.Drawing.Point(6, 43);
+            this.ratelimitval.Location = new System.Drawing.Point(6, 44);
             this.ratelimitval.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -424,51 +480,57 @@
             this.label8.TabIndex = 50;
             this.label8.Text = "Hız Limit (ms)";
             // 
-            // prepareEdge
+            // groupBox3
             // 
-            this.prepareEdge.ForeColor = System.Drawing.Color.DarkBlue;
-            this.prepareEdge.Location = new System.Drawing.Point(6, 266);
-            this.prepareEdge.Name = "prepareEdge";
-            this.prepareEdge.Size = new System.Drawing.Size(153, 35);
-            this.prepareEdge.TabIndex = 62;
-            this.prepareEdge.Text = "Edge Başlat";
-            this.prepareEdge.UseVisualStyleBackColor = true;
-            this.prepareEdge.Click += new System.EventHandler(this.prepareEdge_Click);
+            this.groupBox3.Controls.Add(this.clearPlayers);
+            this.groupBox3.Controls.Add(this.addPlayers);
+            this.groupBox3.Controls.Add(this.playerLst);
+            this.groupBox3.Enabled = false;
+            this.groupBox3.ForeColor = System.Drawing.Color.DarkBlue;
+            this.groupBox3.Location = new System.Drawing.Point(904, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(264, 313);
+            this.groupBox3.TabIndex = 66;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Çoklu Oyuncu";
             // 
-            // processtimer
+            // clearPlayers
             // 
-            this.processtimer.Location = new System.Drawing.Point(6, 231);
-            this.processtimer.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.processtimer.Name = "processtimer";
-            this.processtimer.Size = new System.Drawing.Size(149, 28);
-            this.processtimer.TabIndex = 69;
-            this.processtimer.Value = new decimal(new int[] {
-            50,
-            0,
-            0,
-            0});
+            this.clearPlayers.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.clearPlayers.Location = new System.Drawing.Point(153, 23);
+            this.clearPlayers.Name = "clearPlayers";
+            this.clearPlayers.Size = new System.Drawing.Size(105, 34);
+            this.clearPlayers.TabIndex = 68;
+            this.clearPlayers.Text = "Temizle";
+            this.clearPlayers.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // addPlayers
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DarkOrchid;
-            this.label4.Location = new System.Drawing.Point(6, 212);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 20);
-            this.label4.TabIndex = 68;
-            this.label4.Text = "İşlem Kontrol";
+            this.addPlayers.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.addPlayers.Location = new System.Drawing.Point(6, 23);
+            this.addPlayers.Name = "addPlayers";
+            this.addPlayers.Size = new System.Drawing.Size(141, 34);
+            this.addPlayers.TabIndex = 67;
+            this.addPlayers.Text = "Listeyi Ekle";
+            this.addPlayers.UseVisualStyleBackColor = true;
+            this.addPlayers.Click += new System.EventHandler(this.addPlayers_Click);
+            // 
+            // playerLst
+            // 
+            this.playerLst.FormattingEnabled = true;
+            this.playerLst.ItemHeight = 20;
+            this.playerLst.Location = new System.Drawing.Point(6, 63);
+            this.playerLst.Name = "playerLst";
+            this.playerLst.Size = new System.Drawing.Size(252, 244);
+            this.playerLst.TabIndex = 0;
             // 
             // SnipeMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.ClientSize = new System.Drawing.Size(1180, 334);
+            this.ClientSize = new System.Drawing.Size(902, 330);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.priceSetupBox);
@@ -489,11 +551,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.loopcdval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.targetloopval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.buycdval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ratelimitval)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.processtimer)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -532,5 +595,10 @@
         private System.Windows.Forms.Button prepareEdge;
         private System.Windows.Forms.NumericUpDown processtimer;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button clearPlayers;
+        private System.Windows.Forms.Button addPlayers;
+        private System.Windows.Forms.ListBox playerLst;
+        private System.Windows.Forms.CheckBox multisearchCh;
     }
 }

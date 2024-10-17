@@ -1,12 +1,13 @@
 ﻿using Discord.Webhook;
-using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
-using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Support.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,34 +35,32 @@ namespace SnipeBot
         {
             try
             {
-                LogApp($"Fiyat ayarlanıyor...");
-                if (token.IsCancellationRequested || driver == null)
-                {
-                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                    return;
-                }
+                InfoLog($"Fiyat ayarlanıyor...");
+                if (token.IsCancellationRequested || driver == null) return;
                 int loopcounter = 0;
                 while (loopcounter < processtimer.Value)
                 {
                     IReadOnlyList<IWebElement> priceInput = driver.FindElements(By.ClassName("ut-number-input-control"));
                     if (priceInput.Count != 0)
                     {
-                        priceInput[0].Clear();
-                        priceInput[0].SendKeys(minbidval.ToString());
+                        if (minbidval != 0)
+                        {
+                            priceInput[0].Clear();
+                            priceInput[0].SendKeys(minbidval.ToString());
+                        }
                         priceInput[3].Clear();
                         priceInput[3].SendKeys(currentprice.ToString());
-                        LogApp($"Fiyat ayarlama başarılı.", Color.Green);
+                        SuccessLog($"Fiyat ayarlama başarılı.");
                         return;
                     }
                     await Task.Delay(100);
                     loopcounter++;
                 }
-                LogApp($"Fiyat ayarlama başarısız. (hata-01)", Color.Red);
+                ErrorLog($"Fiyat ayarlama başarısız.");
             }
             catch (Exception ex)
             {
-                LogApp($"Fiyat ayarlama başarısız. (hata-02)\nDetay:{ex}", Color.Red);
-                await DiscordMessage($"Fiyat ayarlama başarısız. (hata-02)\nDetay:{ex}");
+                ErrorLog($"Fiyat ayarlama başarısız. (Genel Hata)\nDetay:{ex}");
                 ErrorCount++;
             }
             return;
@@ -71,12 +70,8 @@ namespace SnipeBot
         {
             try
             {
-                LogApp($"Arama sayfasına dönülüyor...");
-                if (token.IsCancellationRequested || driver == null)
-                {
-                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                    return;
-                }
+                InfoLog($"Arama sayfasına dönülüyor...");
+                if (token.IsCancellationRequested || driver == null) return;
                 int loopcounter = 0;
                 while (loopcounter < processtimer.Value)
                 {
@@ -87,19 +82,18 @@ namespace SnipeBot
                         if (backPgsBtn != null)
                         {
                             backPgsBtn.Click();
-                            LogApp($"Arama sayfasına dönme başarılı.", Color.Green);
+                            SuccessLog($"Arama sayfasına dönme başarılı.");
                             return;
                         }
                     }
                     await Task.Delay(100);
                     loopcounter++;
                 }
-                LogApp($"Arama sayfasına dönme başarısız. (hata-03)", Color.Red);
+                ErrorLog($"Arama sayfasına dönme başarısız.");
             }
             catch (Exception ex)
             {
-                LogApp($"Arama sayfasına dönme başarısız. (hata-04)\nDetay:{ex}", Color.Red);
-                await DiscordMessage($"Arama sayfasına dönme başarısız. (hata-04)\nDetay:{ex}");
+                ErrorLog($"Arama sayfasına dönme başarısız.\nDetay:{ex}");
                 ErrorCount++;
             }
             return;
@@ -109,12 +103,8 @@ namespace SnipeBot
         {
             try
             {
-                LogApp($"Arama yapılıyor...");
-                if (token.IsCancellationRequested || driver == null)
-                {
-                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                    return;
-                }
+                InfoLog($"Arama yapılıyor...");
+                if (token.IsCancellationRequested || driver == null) return;
                 int loopcounter = 0;
                 while (loopcounter < processtimer.Value)
                 {
@@ -122,19 +112,17 @@ namespace SnipeBot
                     if (searchButton != null)
                     {
                         searchButton.Click();
-                        LogApp($"Arama yapıldı.", Color.Green);
+                        SuccessLog($"Arama yapıldı.");
                         return;
                     }
                     await Task.Delay(100);
                     loopcounter++;
                 }
-                LogApp($"Arama başarısız. (hata-05)", Color.Red); //hata 6
-
+                ErrorLog($"Arama başarısız."); //hata 6
             }
             catch (Exception ex)
             {
-                LogApp($"Arama başarısız. (hata-06)\nDetay:{ex}", Color.Red); //hata 7
-                await DiscordMessage($"Arama başarısız. (hata-06)\nDetay:{ex}");
+                InfoLog($"Arama başarısız.\nDetay:{ex}"); //hata 7
                 ErrorCount++;
             }
             return;
@@ -142,12 +130,8 @@ namespace SnipeBot
 
         private async Task BuyFunction(CancellationToken token, int curprice) //sonuçları kontrol et ve satın al
         {
-            LogApp($"Arama sonuçları kontrol ediliyor...");
-            if (token.IsCancellationRequested || driver == null)
-            {
-                LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                return;
-            }
+            InfoLog($"Arama sonuçları kontrol ediliyor...");
+            if (token.IsCancellationRequested || driver == null) return;
             int resultCheckCounter = 0;
             bool buyBtnCheck = false;
             bool noResultCheck = false;
@@ -162,7 +146,6 @@ namespace SnipeBot
                         buyBtnCheck = true;
                         break;
                     }
-
                     IWebElement noResult = driver.FindElements(By.TagName("section")).FirstOrDefault(el => el.Text.Contains("No results"));
                     if (noResult != null)
                     {
@@ -172,28 +155,19 @@ namespace SnipeBot
                 }
                 catch (StaleElementReferenceException)
                 {
-                    LogApp("Öğe güncellenmiş, tekrar deneniyor... (Sorun yok.)");
+                    InfoLog("Öğe güncellenmiş, tekrar deneniyor... (Sorun yok.)");
                 }
                 catch (Exception ex)
                 {
-                    LogApp($"Sonuç kontrol başarısız. (hata-07)\nDetay:{ex}", Color.Red);
-                    await DiscordMessage($"Sonuç kontrol başarısız. (hata-07)\nDetay:{ex}");
+                    ErrorLog($"Sonuç kontrol başarısız.\nDetay:{ex}");
                 }
                 await Task.Delay(100);
                 resultCheckCounter++;
             }
-
-            if (buyBtnCheck) LogApp($"Satın alma bulundu.", Color.Green);
-            else if (noResultCheck) { LogApp($"Sonuç yok."); return; }
-
-            LogApp($"Satın alma onaylanıyor...");
-
-            if (token.IsCancellationRequested)
-            {
-                LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                return;
-            }
-
+            if (buyBtnCheck) SuccessLog($"Satın alma bulundu.");
+            else if (noResultCheck) { InfoLog($"Sonuç yok."); return; }
+            InfoLog($"Satın alma onaylanıyor...");
+            if (token.IsCancellationRequested) return;
             try
             {
                 int confirmBtnCounter = 0;
@@ -212,25 +186,26 @@ namespace SnipeBot
                 }
                 if (success)
                 {
-                    LogApp($"Satın alma onaylandı!", Color.Green);
-                    await DiscordMessage($"Yeni bir satın alma tamamlandı. Fiyat: {curprice}");
+                    SuccessLog($"Satın alma onaylandı!");
                     BuyCount++;
-                    LogApp($"EAFC Sunucu güncellemesi için 25 saniye bekleniyor...");
+                    string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                    string logEntry = $"{DateTime.Now:dd/MM HH:mm} - {userName} | @everyone {curprice} değerinde kart alındı.";
+                    await DiscordLog.SendMessageAsync(logEntry);
+                    InfoLog($"EAFC Sunucu güncellemesi için 25 saniye bekleniyor...");
                     await Task.Delay((int)(buycdval.Value * 1000));
                 }
-                else LogApp("Onay kutusu yok. (error-8)", Color.Red);
+                else ErrorLog("Onay kutusu yok.");
             }
             catch (Exception ex)
             {
-                LogApp($"Satın alma onay kontrolü başarısız. (hata-9)\nDetay:{ex}", Color.Red);
-                await DiscordMessage($"Satın alma onay kontrolü başarısız. (hata-9)\nDetay:{ex}");
+                ErrorLog($"Satın alma onay kontrolü başarısız.\nDetay:{ex}");
                 ErrorCount++;
             }
         }
 
         private async Task MainFunction(CancellationToken token)
         {
-            LogApp($"Başlatılıyor...");
+            InfoLog($"Başlatılıyor...");
 
             var processes = Process.GetProcessesByName("msedgedriver");
             foreach (var process in processes)
@@ -239,11 +214,11 @@ namespace SnipeBot
                 {
                     process.Kill();
                     process.WaitForExit();
-                    LogApp($"Eski sürücü sonlandırıldı: {process.Id}");
+                    InfoLog($"Eski sürücü sonlandırıldı: {process.Id}");
                 }
                 catch (Exception ex)
                 {
-                    LogApp($"İşlem sonlandırılamadı (Sürücü): {process.Id}, Hata: {ex.Message}");
+                    InfoLog($"İşlem sonlandırılamadı (Sürücü): {process.Id}, Hata: {ex.Message}");
                 }
             }
 
@@ -255,7 +230,6 @@ namespace SnipeBot
 
             driver = new EdgeDriver(service, options);
 
-            // Set Page EAFC
             var windowHandles = driver.WindowHandles;
             foreach (var handle in windowHandles)
             {
@@ -263,10 +237,10 @@ namespace SnipeBot
                 if (driver.Title.Contains("FC Ultimate")) break;
             }
 
-            LogApp("Sayfa: " + driver.Title);
+            InfoLog("Sayfa: " + driver.Title);
 
             //IReadOnlyCollection<IWebElement> containers = driver.FindElements(By.CssSelector("*"));
-            //foreach (IWebElement element in containers) { LogApp($"Tag: {element.TagName} | Text: {element.Text} | Class: {element.GetAttribute("class")}"); }
+            //foreach (IWebElement element in containers) { InfoLog($"Tag: {element.TagName} | Text: {element.Text} | Class: {element.GetAttribute("class")}"); }
 
             int currentprice = int.Parse(maxpriceTxt.Text); ;
             int increment = int.Parse(changeTxt.Text);
@@ -277,28 +251,27 @@ namespace SnipeBot
 
             while (true)
             {
-
                 if (driver == null)
                 {
-                    LogApp($"Driver kapalı, baştan başlatın.");
+                    InfoLog($"Driver kapalı, baştan başlatın.");
                     break;
                 }
 
-                LogApp($"Mevcut Fiyat: {currentprice}.");
-                LogApp($"Döngü Sayısı: {loopcount}.");
+                InfoLog($"Mevcut Fiyat: {currentprice}.");
+                InfoLog($"Döngü Sayısı: {loopcount}.");
 
                 if (cdloopcount == targetloopval.Value)
                 {
-                    LogApp($"Döngü molası başladı. {loopcdval.Value} saniye.");
+                    InfoLog($"Döngü molası başladı. {loopcdval.Value} saniye.");
                     await Task.Delay((int)(loopcdval.Value * 1000));
                     cdloopcount = 0;
                 }
 
-                if (loopcount != 0) // ilk döngü - fiyat değişimi yok - ilk fiyat 300
+                if (loopcount != 0)
                 {
                     if (currentprice <= maxvalue) currentprice += increment;
                     if (loopcount % 2 == 0) minbidval = 150;
-                    else minbidval = 300;
+                    else minbidval = 0;
                 }
 
                 await PriceSetup(loopcount, currentprice, maxvalue, increment, minbidval, token);
@@ -313,29 +286,25 @@ namespace SnipeBot
                 cdloopcount++;
                 LoopCount = loopcount;
 
-                LogApp($"Hız Limiti Koruması - {ratelimitval.Value / 1000} Saniye Bekleme");
+                InfoLog($"Hız Limiti Koruması - {ratelimitval.Value / 1000} Saniye Bekleme");
 
                 await Task.Delay((int)(ratelimitval.Value));
 
-                if (token.IsCancellationRequested)
-                {
-                    LogApp($"İşlem durdurma komutu alındı.", Color.DarkSalmon);
-                    break;
-                }
+                if (token.IsCancellationRequested) break;
             }
 
             driver.Quit();
-            LogApp($"İşlem sonu.", Color.DarkMagenta);
+            InfoLog($"İşlem sonu.", System.Drawing.Color.DarkMagenta);
         }
 
         private void SnipeMain_Load(object sender, EventArgs e)
         {
-            LogApp($"SnipeBot.", Color.Blue);
+            InfoLog($"SnipeBot.", System.Drawing.Color.Blue);
         }
 
         private void StartBtn_Click(object sender, EventArgs e)
         {
-            LogApp($"İşlem başlatıldı.", Color.BurlyWood);
+            InfoLog($"İşlem başlatıldı.", System.Drawing.Color.BurlyWood);
             StartBtn.Enabled = false;
             StopBtn.Enabled = true;
 
@@ -358,7 +327,7 @@ namespace SnipeBot
             changeTxt.Enabled = true;
             maxchangeTxt.Enabled = true;
 
-            LogApp($"İşlem durdurma komutu verildi.", Color.DarkSalmon);
+            InfoLog($"İşlem durdurma komutu verildi.", System.Drawing.Color.DarkSalmon);
             _cts?.Cancel();
         }
 
@@ -371,36 +340,55 @@ namespace SnipeBot
 
         private void UpdateText(Control control, string text)
         {
-            if (control.InvokeRequired)
-            {
-                control.Invoke(new Action(() =>
-                {
-                    control.Text = text;
-                }));
-            }
-            else
-            {
-                control.Text = text;
-            }
+            if (control.InvokeRequired) control.Invoke(new Action(() => { control.Text = text; }));
+            else control.Text = text;
         }
 
-        private void LogApp(string message, Color? color = null)
+        private void SuccessLog(string message)
         {
             string text = $"[{DateTime.Now:dd/MM HH:mm}] {message}{Environment.NewLine}";
-            if (LoggerTXT.InvokeRequired)
-            {
-                LoggerTXT.Invoke(new Action(() =>
-                {
-                    AppendColoredText(text, color ?? LoggerTXT.ForeColor);
-                }));
-            }
-            else
-            {
-                AppendColoredText(text, color ?? LoggerTXT.ForeColor);
-            }
+            if (LoggerTXT.InvokeRequired) LoggerTXT.Invoke(new Action(() => { AppendColoredText(text, System.Drawing.Color.Green); }));
+            else AppendColoredText(text, System.Drawing.Color.Green);
         }
 
-        private void AppendColoredText(string text, Color color)
+        
+
+        private async void ErrorLog(string message)
+        {
+
+            errorTimestamps.Add(DateTime.Now);
+
+            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            string logEntry = $"**{DateTime.Now:dd/MM HH:mm}** - {userName} | {message}";
+            await DiscordLog.SendMessageAsync(logEntry);
+
+            try
+            {
+                string currentDate = DateTime.Now.ToString("dd_MM");
+                string fileName = $"{currentDate}_errimage.png";
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+                Screenshot screenshot = ((ITakesScreenshot)driver).GetScreenshot();
+                screenshot.SaveAsFile(filePath);
+                await DiscordLog.SendFileAsync(filePath, "");
+            }
+            catch (Exception)
+            {
+                InfoLog("Resim yükleme hatası...");
+            }
+           
+
+            string text = $"[{DateTime.Now:dd/MM HH:mm}] {message}{Environment.NewLine}";
+            if (LoggerTXT.InvokeRequired) LoggerTXT.Invoke(new Action(() => { AppendColoredText(text, System.Drawing.Color.Red); }));
+            else AppendColoredText(text, System.Drawing.Color.Red);
+        }
+        private void InfoLog(string message, System.Drawing.Color? color = null)
+        {
+            string text = $"[{DateTime.Now:dd/MM HH:mm}] {message}{Environment.NewLine}";
+            if (LoggerTXT.InvokeRequired) LoggerTXT.Invoke(new Action(() => { AppendColoredText(text, color ?? LoggerTXT.ForeColor); }));
+            else AppendColoredText(text, color ?? LoggerTXT.ForeColor);
+        }
+
+        private void AppendColoredText(string text, System.Drawing.Color color)
         {
             int start = LoggerTXT.TextLength;
             LoggerTXT.AppendText(text);
@@ -412,9 +400,22 @@ namespace SnipeBot
             LoggerTXT.Focus();
         }
 
+        private List<DateTime> errorTimestamps = new List<DateTime>();
+
+        private void CheckErrorRate()
+        {
+            DateTime now = DateTime.Now;
+            errorTimestamps = errorTimestamps.Where(timestamp => (now - timestamp).TotalMinutes <= 1).ToList();
+            if (errorTimestamps.Count >= 5){
+                ErrorLog("Son 1 dakika içinde 5'den fazla hata oluştu. Program durduruluyor.");
+                _cts?.Cancel();
+            }
+        }
+
         private void StatUpdater_Tick(object sender, EventArgs e)
         {
             UpdateCounts();
+            CheckErrorRate();
         }
 
         private void resetstatsBtn_Click(object sender, EventArgs e)
@@ -428,25 +429,6 @@ namespace SnipeBot
         {
             this.TopMost = topmostcb.Checked;
         }
-
-        public static async Task DiscordMessage(string message, bool ping = false)
-        {
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            string logEntry = $"{DateTime.Now:dd/MM HH:mm} - {userName} | {message}";
-            if (ping) logEntry = $"{DateTime.Now:dd/MM HH:mm} - {userName} | @everyone | {message}";
-            await DiscordLog.SendMessageAsync(logEntry);
-        }
-
-        private async void buycountTxt_TextChanged(object sender, EventArgs e)
-        {
-            await DiscordMessage($"Yeni bir satın alma tamamlandı. (Toplam: {buycountTxt.Text})", true);
-        }
-
-        private async void errorcountTxt_TextChanged(object sender, EventArgs e)
-        {
-            await DiscordMessage($"Bir hata oluştu. (Toplam: {errorcountTxt.Text})", false);
-        }
-
         private void prepareEdge_Click(object sender, EventArgs e)
         {
             var processes = Process.GetProcessesByName("msedge");
@@ -456,11 +438,11 @@ namespace SnipeBot
                 {
                     process.Kill();
                     process.WaitForExit();
-                    LogApp($"İşlem sonlandırıldı: {process.Id}");
+                    InfoLog($"İşlem sonlandırıldı: {process.Id}");
                 }
                 catch (Exception ex)
                 {
-                    LogApp($"İşlem sonlandırılamadı: {process.Id}, Hata: {ex.Message}");
+                    InfoLog($"İşlem sonlandırılamadı: {process.Id}, Hata: {ex.Message}");
                 }
             }
             try
@@ -472,12 +454,83 @@ namespace SnipeBot
                     UseShellExecute = false
                 };
                 Process.Start(psi);
-                LogApp("msedge.exe başarıyla başlatıldı.");
+                InfoLog("msedge.exe başarıyla başlatıldı.");
             }
             catch (Exception ex)
             {
-                LogApp($"msedge.exe başlatılamadı. Hata: {ex.Message}");
+                InfoLog($"msedge.exe başlatılamadı. Hata: {ex.Message}");
             }
+        }
+
+        private void multisearchCh_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!multisearchCh.Checked) this.Size = new Size(917, 369);
+            else this.Size = new Size(1188, 369);
+        }
+
+        private void addPlayers_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Metin Belgeleri (*.txt)|*.txt";
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Title = "Oyuncu listesini seçin";
+                openFileDialog.DefaultExt = "txt";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.CheckPathExists = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = openFileDialog.FileName;
+
+                    var fileStream = openFileDialog.OpenFile();
+
+                    using (StreamReader reader = new StreamReader(fileStream))
+                    {
+                        fileContent = reader.ReadToEnd();
+                    }
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var processes = Process.GetProcessesByName("msedgedriver");
+            foreach (var process in processes)
+            {
+                try
+                {
+                    process.Kill();
+                    process.WaitForExit();
+                    InfoLog($"Eski sürücü sonlandırıldı: {process.Id}");
+                }
+                catch (Exception ex)
+                {
+                    InfoLog($"İşlem sonlandırılamadı (Sürücü): {process.Id}, Hata: {ex.Message}");
+                }
+            }
+
+            var options = new EdgeOptions();
+            options.DebuggerAddress = "localhost:9111";
+
+            var service = EdgeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true;
+
+            driver = new EdgeDriver(service, options);
+
+            var windowHandles = driver.WindowHandles;
+            foreach (var handle in windowHandles)
+            {
+                driver.SwitchTo().Window(handle);
+                if (driver.Title.Contains("FC Ultimate")) break;
+            }
+
+            InfoLog("Sayfa: " + driver.Title);
+
+            ErrorLog("test");
         }
     }
 }
