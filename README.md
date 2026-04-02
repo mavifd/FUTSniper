@@ -1,5 +1,7 @@
 # FUTSniper
 
+This project is developed **strictly for educational and analytical purposes only**.
+
 FUTSniper, **.NET 9 Windows Forms** ve **Selenium WebDriver** kullanılarak geliştirilmiş bir masaüstü otomasyon uygulamasıdır.  
 Uygulama, Microsoft Edge üzerinden EA FC Ultimate Team Web App üzerinde belirli arama/satın alma döngülerini otomatikleştirmek için tasarlanmıştır.
 
